@@ -1,0 +1,145 @@
+import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
+import { CurrencyPipe, PercentPipe } from '@angular/common';
+import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-tigrin',
+  imports: [CurrencyPipe, PercentPipe, FormsModule],
+  templateUrl: './tigrin.component.html',
+  styleUrl: './tigrin.component.css',
+  animations: [
+    trigger('sorteioAnim', [
+      state('initial', style({ opacity: 0, transform: 'translateY(-20px)' })),
+      state('active', style({ opacity: 1, transform: 'translateY(0)' })),
+      state('final', style({ opacity: 1, transform: 'scale(1.2)' })),
+      transition('initial => active', [
+        animate('0.2s ease-out')
+      ]),
+      transition('active => initial', [
+        animate('0.2s ease-in')
+      ]),
+      transition('active => final', [
+        animate('0.5s ease-in-out')
+      ]),
+      transition('* => rolling', [
+        animate('0.1s ease-in-out', keyframes([
+          style({ opacity: 0, transform: 'translateY(-20px)', offset: 0 }),
+          style({ opacity: 1, transform: 'translateY(0)', offset: 0.5 }),
+          style({ opacity: 0, transform: 'translateY(20px)', offset: 1 })
+        ]))
+      ])
+    ])
+  ]
+})
+export class TigrinComponent {
+  optionsMap: {
+    [key: string]: {
+      multi: number,
+      endGame: boolean,
+    }
+  } = {
+      '🚀': {
+        multi: 1.2,
+        endGame: false,
+      },
+      '❤️': {
+        multi: 0.8,
+        endGame: false,
+      },
+      '👌': {
+        multi: 0.5,
+        endGame: false,
+      },
+      '🤑': {
+        multi: 2.5,
+        endGame: false,
+      },
+      '😰': {
+        multi: -0.75,
+        endGame: false,
+      },
+      '🥶': {
+        multi: -1.8,
+        endGame: false,
+      },
+      '🤡': {
+        multi: -1.5,
+        endGame: false,
+      },
+      '💀': {
+        multi: -2.9,
+        endGame: true
+      }
+    };
+
+  options = Object.keys(this.optionsMap);
+  ods = 3;
+
+  credits = 100;
+  cost = 2;
+
+  currents: string[] = [];
+  animationState: string = 'initial';
+
+  isSorting = false;
+  total = signal(0);
+
+  async startSorting(): Promise<void> {
+    if (this.isSorting) {
+      return;
+    }
+
+    if (this.credits < this.cost) return;
+
+    this.credits -= this.cost;
+
+    this.isSorting = true;
+
+    this.currents = await Promise.all([
+      this.sorting(0),
+      this.sorting(1),
+      this.sorting(2)
+    ])
+
+    this.check();
+    this.isSorting = false;
+  }
+
+  private async sorting(pos: number) {
+    const totalIterations = Math.floor(Math.random() * (30 - 10 + 1)) + 10;
+    const finalIndex = Math.floor(Math.random() * this.options.length);
+    const delayBetweenLetters = 100;
+
+    for (let i = 0; i < totalIterations; i++) {
+      const randomIndex = Math.floor(Math.random() * this.options.length);
+      this.currents[pos] = this.options[randomIndex];
+      this.animationState = 'rolling';
+      await this.delay(delayBetweenLetters);
+      this.animationState = 'initial';
+    }
+
+    this.currents[pos] = this.options[finalIndex];
+    this.animationState = 'final';
+    return this.currents[pos];
+  }
+
+  private check() {
+    const multi = this.currents.reduce((acc, i) => {
+      return acc + (this.optionsMap[i].multi)
+    }, 1);
+
+    this.total.set(multi);
+
+    if ((this.cost * multi) > 0)
+      this.credits += this.cost * multi;
+
+    if (this.currents.every((val) => val === this.currents[0]) && this.optionsMap[this.currents[0]].endGame) {
+      this.credits = 0;
+    }
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+}
