@@ -2,10 +2,12 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
 import { CurrencyPipe, PercentPipe } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { optionsMap } from '../../entity/Option';
+import { OptionPipe } from "../../pipes/option.pipe";
 
 @Component({
   selector: 'app-tigrin',
-  imports: [CurrencyPipe, PercentPipe, FormsModule],
+  imports: [CurrencyPipe, PercentPipe, FormsModule, OptionPipe],
   templateUrl: './tigrin.component.html',
   styleUrl: './tigrin.component.css',
   animations: [
@@ -33,47 +35,8 @@ import { FormsModule } from '@angular/forms';
   ]
 })
 export class TigrinComponent {
-  optionsMap: {
-    [key: string]: {
-      multi: number,
-      endGame: boolean,
-    }
-  } = {
-      '🚀': {
-        multi: 1.2,
-        endGame: false,
-      },
-      '❤️': {
-        multi: 0.8,
-        endGame: false,
-      },
-      '👌': {
-        multi: 0.5,
-        endGame: false,
-      },
-      '🤑': {
-        multi: 2.5,
-        endGame: false,
-      },
-      '😰': {
-        multi: -0.75,
-        endGame: false,
-      },
-      '🥶': {
-        multi: -1.8,
-        endGame: false,
-      },
-      '🤡': {
-        multi: -1.5,
-        endGame: false,
-      },
-      '💀': {
-        multi: -2.9,
-        endGame: true
-      }
-    };
 
-  options = Object.keys(this.optionsMap);
+  options = Object.keys(optionsMap);
   ods = 3;
 
   credits = 100;
@@ -126,7 +89,7 @@ export class TigrinComponent {
 
   private check() {
     const multi = this.currents.reduce((acc, i) => {
-      return acc + (this.optionsMap[i].multi)
+      return acc + (optionsMap[i].multi)
     }, 1);
 
     this.total.set(multi);
@@ -134,7 +97,7 @@ export class TigrinComponent {
     if ((this.cost * multi) > 0)
       this.credits += this.cost * multi;
 
-    if (this.currents.every((val) => val === this.currents[0]) && this.optionsMap[this.currents[0]].endGame) {
+    if (this.currents.every((val) => val === this.currents[0]) && optionsMap[this.currents[0]].endGame) {
       this.credits = 0;
     }
   }
