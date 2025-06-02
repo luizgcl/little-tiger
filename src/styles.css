@@ -1,8 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 
-* {
-    margin: 0;
-    padding: 0;
+:root {
+    --primary-color: #00ff88;
+    --secondary-color: #007bff;
+    --dark-background: #1a1a2e;
+    --card-background: #2a2a3e;
+    --text-color: #e0e0e0;
+    --highlight-color: #ffcc00;
+    --danger-color: #ff4d4d;
+}
+
+body {
+    background-color: var(--dark-background);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
     box-sizing: border-box;
 }
