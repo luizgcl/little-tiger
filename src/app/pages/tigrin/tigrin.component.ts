@@ -48,6 +48,8 @@ export class TigrinComponent {
   isSorting = false;
   total = signal(0);
 
+  audio = new Audio();
+
   async startSorting(): Promise<void> {
     if (this.isSorting) {
       return;
@@ -70,6 +72,10 @@ export class TigrinComponent {
   }
 
   private async sorting(pos: number) {
+    this.audio.src = 'audios/mixkit-bubble-pop-up-alert-notification-2357.wav';
+    this.audio.load();
+    this.audio.play();
+
     const totalIterations = Math.floor(Math.random() * (30 - 10 + 1)) + 10;
     const finalIndex = Math.floor(Math.random() * this.options.length);
     const delayBetweenLetters = 100;
@@ -94,8 +100,15 @@ export class TigrinComponent {
 
     this.total.set(multi);
 
-    if ((this.cost * multi) > 0)
-      this.credits += this.cost * multi;
+    if ((this.cost * multi) > 0) {
+      this.credits += this.cost + (this.cost * multi);
+      this.audio.src = 'audios/mixkit-positive-notification-951.wav';
+    } else {
+      this.audio.src = 'audios/mixkit-software-interface-remove-2576.wav';
+    }
+
+    this.audio.load();
+    this.audio.play();
 
     if (this.currents.every((val) => val === this.currents[0]) && optionsMap[this.currents[0]].endGame) {
       this.credits = 0;
