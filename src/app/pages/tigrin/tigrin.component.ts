@@ -1,13 +1,14 @@
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
-import { CurrencyPipe, PercentPipe } from '@angular/common';
+import { CurrencyPipe, PercentPipe, DecimalPipe } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { optionsMap } from '../../entity/Option';
 import { OptionPipe } from "../../pipes/option.pipe";
+import { StatsComponent } from '../../components/stats/stats.component';
 
 @Component({
   selector: 'app-tigrin',
-  imports: [CurrencyPipe, PercentPipe, FormsModule, OptionPipe],
+  imports: [CurrencyPipe, PercentPipe, FormsModule, OptionPipe, StatsComponent],
   templateUrl: './tigrin.component.html',
   styleUrl: './tigrin.component.css',
   animations: [

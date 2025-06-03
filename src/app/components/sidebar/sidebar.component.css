@@ -1,0 +1,51 @@
+/* Sidebar specific styles */
+aside {
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Active menu item styles */
+.active-menu-item {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
+}
+
+/* Hover effects */
+.menu-item:hover {
+  transform: translateX(4px);
+  transition: all 0.2s ease;
+}
+
+/* Badge animations */
+@keyframes badge-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.badge-live {
+  animation: badge-pulse 2s infinite;
+}
+
+/* Scrollbar styling */
+aside::-webkit-scrollbar {
+  width: 4px;
+}
+
+aside::-webkit-scrollbar-track {
+  background: rgba(55, 65, 81, 0.3);
+}
+
+aside::-webkit-scrollbar-thumb {
+  background: rgba(251, 191, 36, 0.3);
+  border-radius: 2px;
+}
+
+aside::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 191, 36, 0.5);
+}
