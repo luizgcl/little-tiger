@@ -1,0 +1,7 @@
+<button (click)="toggleMute()" class="text-gray-100 cursor-pointer">
+    @if(audio.muted) {
+        <lucide-icon name="headphones" class="my-icon"></lucide-icon>
+    } @else {
+        <lucide-icon name="headphone-off" class="my-icon"></lucide-icon>
+    }
+</button>
