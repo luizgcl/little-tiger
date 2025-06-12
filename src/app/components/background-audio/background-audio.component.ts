@@ -11,6 +11,8 @@ export class BackgroundAudioComponent implements OnInit, OnDestroy {
 
   audio = new Audio('audios/casino-ambiance-19130.mp3');
 
+  played = false;
+
   constructor() {
     this.audio.defaultMuted = true;
     this.audio.muted = true;
@@ -20,7 +22,6 @@ export class BackgroundAudioComponent implements OnInit, OnDestroy {
     this.audio.volume = 0.1;
     this.audio.load();
     this.audio.muted = true;
-    this.audio.play();
   }
 
   playAudio() {
@@ -28,6 +29,9 @@ export class BackgroundAudioComponent implements OnInit, OnDestroy {
   }
 
   toggleMute() {
+    if (!this.played) {
+      this.playAudio();
+    }
     this.audio.muted = !this.audio.muted;
   }
 
