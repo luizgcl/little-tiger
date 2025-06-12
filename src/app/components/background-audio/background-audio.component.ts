@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -7,13 +7,18 @@ import { LucideAngularModule } from 'lucide-angular';
   templateUrl: './background-audio.component.html',
   styleUrl: './background-audio.component.css'
 })
-export class BackgroundAudioComponent implements AfterViewInit, OnDestroy {
+export class BackgroundAudioComponent implements OnInit, OnDestroy {
 
   audio = new Audio('audios/casino-ambiance-19130.mp3');
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.audio.volume = 0.1;
     this.audio.load();
+    this.audio.muted = true;
+    this.audio.play();
+  }
+
+  playAudio() {
     this.audio.play();
   }
 
