@@ -11,6 +11,11 @@ export class BackgroundAudioComponent implements OnInit, OnDestroy {
 
   audio = new Audio('audios/casino-ambiance-19130.mp3');
 
+  constructor() {
+    this.audio.defaultMuted = true;
+    this.audio.muted = true;
+  }
+
   ngOnInit(): void {
     this.audio.volume = 0.1;
     this.audio.load();

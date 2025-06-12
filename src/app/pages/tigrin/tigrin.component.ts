@@ -56,6 +56,12 @@ export class TigrinComponent {
   }
 
   async startSorting(): Promise<void> {
+    if (this.audio.src !== 'audios/mixkit-bubble-pop-up-alert-notification-2357.wav')
+    {
+      this.audio.src = 'audios/mixkit-bubble-pop-up-alert-notification-2357.wav';
+      this.audio.load();
+    }
+
     if (this.isSorting) {
       return;
     }
